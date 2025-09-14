@@ -1,0 +1,2 @@
+controlador.HiloFinalizarCompraYTicket
+controlador.GenerarTicket

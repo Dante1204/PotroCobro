@@ -1,0 +1,2 @@
+controlador.CalcularPrecio
+controlador.HiloCalculoPrecio

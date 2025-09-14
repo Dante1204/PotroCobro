@@ -1,0 +1,2 @@
+controlador.AplicarDescuento
+controlador.HiloAplicarDescuentos
