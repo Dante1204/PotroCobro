@@ -129,6 +129,23 @@ public class ConexionDB {
             return false;
         }
     }
+    
+    public boolean registrarProducto(String nombre, Double precio){
+        String sql = "INSERT INTO productos(nombre, precio) VALUES(?,?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)){
+            pstmt.setString(1, nombre);
+            pstmt.setDouble(2, precio);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 19) {
+                System.err.println("Error: El producto ya existe.");
+            } else {
+                System.err.println(e.getMessage());
+            }
+            return false;
+        }
+    }
 
     // --- MÉTODOS PARA PRODUCTOS (ya lo tenías) ---
 

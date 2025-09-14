@@ -11,7 +11,7 @@ public class Interfaz extends JFrame {
     private JScrollPane scrollProductos;
     public JLabel etiquetaSubtotal, etiquetaDescuento, etiquetaTotal;
     public JTextArea areaCarrito;
-    public JButton botonFinalizarCompra, botonLogin, botonLogout;
+    public JButton botonFinalizarCompra, botonLogin, botonLogout, botonAnadirProducto;
 
     public Interfaz() {
         setTitle("CUU TIANGUISTENCO - Autocobro");
@@ -41,6 +41,7 @@ public class Interfaz extends JFrame {
         etiquetaTotal = new JLabel("$0.00");
         botonFinalizarCompra = new JButton("Finalizar Compra");
         botonLogout = new JButton("Cerrar Sesión");
+        botonAnadirProducto = new JButton("Añadir producto");
         
         panelTotal.add(new JLabel("Subtotal:"));
         panelTotal.add(etiquetaSubtotal);
@@ -52,6 +53,8 @@ public class Interfaz extends JFrame {
         panelTotal.add(botonFinalizarCompra);
         panelTotal.add(new JLabel("")); 
         panelTotal.add(botonLogout);
+        panelTotal.add(new JLabel(""));
+        panelTotal.add(botonAnadirProducto);
         
         panelDerecho.add(panelCarrito, BorderLayout.CENTER);
         panelDerecho.add(panelTotal, BorderLayout.SOUTH);

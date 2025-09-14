@@ -34,8 +34,30 @@ public class ControladorPrincipal {
     private void configurarEventosLogin() {
         vista.botonLogin.addActionListener(e -> mostrarDialogoLogin());
         vista.botonLogout.addActionListener(e -> gestionarLogout());
+        vista.botonAnadirProducto.addActionListener(e -> anadirProducto());
     }
 
+    private void anadirProducto() {
+        JTextField nombreField = new JTextField(15);
+        JTextField precioField = new JTextField(15);
+        JPanel panelAnadir = new JPanel(new GridLayout(2, 2, 5, 5));
+        panelAnadir.add(new JLabel("Nombre del Producto:"));
+        panelAnadir.add(nombreField);
+        panelAnadir.add(new JLabel("Precio del Producto:"));
+        panelAnadir.add(precioField);
+
+        int result = JOptionPane.showConfirmDialog(vista, panelAnadir, "Añadir Nuevo Producto", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            String nombre = nombreField.getText();
+            Double precio = Double.parseDouble(precioField.getText());
+            
+            db.registrarProducto(nombre, precio);
+
+        }
+        
+    }
+    
     private void mostrarDialogoLogin() {
         JTextField usuarioField = new JTextField(15);
         JPasswordField contrasenaField = new JPasswordField(15);
