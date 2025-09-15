@@ -15,11 +15,11 @@ public class PotroCobro {
         // en el Event Dispatch Thread (EDT) de Swing.
         
         ConexionDB.getInstance().inicializarBaseDeDatos();
-
         
         SwingUtilities.invokeLater(() -> {
             ControladorPrincipal controlador = new ControladorPrincipal();
             controlador.iniciar();
+            
         });
     }
 }

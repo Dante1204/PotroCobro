@@ -52,8 +52,18 @@ public class ControladorPrincipal {
             String nombre = nombreField.getText();
             Double precio = Double.parseDouble(precioField.getText());
             
-            db.registrarProducto(nombre, precio);
+        if (db.registrarProducto(nombre, precio)) {
+        JOptionPane.showMessageDialog(vista, "Producto añadido exitosamente.");
+        
+        // --- AQUÍ LA SOLUCIÓN ---
+        // Recargamos la lista de productos para que se vea el nuevo
+        this.catalogo = db.obtenerTodosLosProductos();
+        vista.cargarProductos(catalogo, this);
+        // -----------------------
 
+    } else {
+        JOptionPane.showMessageDialog(vista, "Error al añadir el producto.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
         }
         
     }
@@ -70,7 +80,7 @@ public class ControladorPrincipal {
         if (result == JOptionPane.OK_OPTION) {
             String usuario = usuarioField.getText();
             String contrasena = new String(contrasenaField.getPassword());
-            if (usuario.isEmpty() || contrasena.isEmpty()) {
+              if (usuario.isEmpty() || contrasena.isEmpty()) {
                 JOptionPane.showMessageDialog(vista, "El usuario y la contraseña no pueden estar vacíos.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -90,18 +100,27 @@ public class ControladorPrincipal {
     }
 
     private void gestionarLoginExitoso() {
-        this.catalogo = db.obtenerTodosLosProductos();
-        // Le pasamos 'this' (el controlador) a la vista para que pueda llamarnos
-        vista.cargarProductos(catalogo, this);
-        
-        vista.habilitarTienda();
-        iniciarHilosDeCompra();
-        
-        // El ActionListener para finalizar compra se configura aquí
-        if (vista.botonFinalizarCompra.getActionListeners().length == 0) {
-            vista.botonFinalizarCompra.addActionListener(ev -> gestionarFinalizacionCompra());
-        }
+    // 1. Prepara los datos de los productos
+    this.catalogo = db.obtenerTodosLosProductos();
+    
+    // 2. Dile a la vista que cargue esos productos en el panel (aunque aún no se vea)
+    vista.cargarProductos(catalogo, this);
+    
+    // 3. Ahora, habilita la tienda, haciendo visible el panel con los productos ya cargados
+    vista.habilitarTienda();
+    
+    // 4. --- ¡¡AQUÍ ESTÁ LA MAGIA!! ---
+    // Le decimos a la ventana ENTERA (la 'vista') que se revalide y se redibuje.
+    vista.revalidate();
+    vista.repaint();
+    // ---------------------------------
+
+    // El resto de tu código...
+    iniciarHilosDeCompra();
+    if (vista.botonFinalizarCompra.getActionListeners().length == 0) {
+        vista.botonFinalizarCompra.addActionListener(ev -> gestionarFinalizacionCompra());
     }
+}
 
     /**
      * Método público para que la Vista nos ordene agregar un producto al carrito.

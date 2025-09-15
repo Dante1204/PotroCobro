@@ -6,12 +6,13 @@
             <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/potrocobro/PotroCobro.java</file>
             <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Modelo/Producto.java</file>
             <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Modelo/CarritoCompras.java</file>
-            <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Vista/Interfaz.java</file>
             <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Controlador/Sesion.java</file>
             <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Controlador/CalcularPrecio.java</file>
             <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Controlador/AplicarDescuento.java</file>
             <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Controlador/GenerarTicket.java</file>
+            <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Vista/PanelAdaptable.java</file>
             <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Controlador/ControladorPrincipal.java</file>
+            <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/bdd/ConexionDB.java</file>
         </group>
     </open-files>
 </project-private>

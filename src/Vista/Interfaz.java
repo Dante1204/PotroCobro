@@ -73,7 +73,6 @@ public class Interfaz extends JFrame {
         limpiarPanelProductos();
         for (Producto producto : productos) {
             ProductoPanel panelProducto = new ProductoPanel(producto);
-            
             panelProducto.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
                     controlador.agregarProductoAlCarrito(producto);
@@ -84,6 +83,8 @@ public class Interfaz extends JFrame {
         }
         panelProductos.revalidate();
         panelProductos.repaint();
+        scrollProductos.revalidate();
+        scrollProductos.repaint();
     }
 
     public void limpiarPanelProductos() {
@@ -97,6 +98,7 @@ public class Interfaz extends JFrame {
         this.botonFinalizarCompra.setEnabled(true);
         this.botonLogout.setEnabled(true);
         this.scrollProductos.setVisible(true);
+        
     }
 
     public void deshabilitarTienda() {
