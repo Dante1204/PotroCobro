@@ -5,7 +5,7 @@
 package controlador;
 
 public class Sesion implements Runnable {
-    private volatile boolean running = true; // 'volatile' para visibilidad entre hilos
+    private volatile boolean running = true;
 
     public void detener() {
         this.running = false;

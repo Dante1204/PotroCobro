@@ -12,6 +12,7 @@ public class Interfaz extends JFrame {
     public JLabel etiquetaSubtotal, etiquetaDescuento, etiquetaTotal;
     public JTextArea areaCarrito;
     public JButton botonFinalizarCompra, botonLogin, botonLogout, botonAnadirProducto;
+    public JComboBox<String> comboCategorias; // <-- JComboBox declarado
 
     public Interfaz() {
         setTitle("CUU TIANGUISTENCO - Autocobro");
@@ -19,6 +20,18 @@ public class Interfaz extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+
+        // --- Panel Superior (Filtros de Categoría) ---
+        JPanel panelFiltros = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panelFiltros.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        panelFiltros.add(new JLabel("Categoría:"));
+        comboCategorias = new JComboBox<>(); // <-- JComboBox instanciado
+        // Puedes agregar categorías de ejemplo si lo deseas
+        comboCategorias.addItem("Todas");
+        comboCategorias.addItem("Ropa");
+        comboCategorias.addItem("Electrónicos");
+        panelFiltros.add(comboCategorias);
+        add(panelFiltros, BorderLayout.NORTH); // <-- Panel de filtros agregado al frame
 
         // --- Panel de Productos (CENTRO) ---
         panelProductos = new JPanel(new GridLayout(0, 1, 10, 10));
@@ -98,6 +111,7 @@ public class Interfaz extends JFrame {
         this.botonFinalizarCompra.setEnabled(true);
         this.botonLogout.setEnabled(true);
         this.scrollProductos.setVisible(true);
+        this.comboCategorias.setEnabled(true); // <-- Habilitar ComboBox
         
     }
 
@@ -105,6 +119,9 @@ public class Interfaz extends JFrame {
         this.botonLogin.setEnabled(true);
         this.botonFinalizarCompra.setEnabled(false);
         this.botonLogout.setEnabled(false);
+        if (this.comboCategorias != null) { // <-- Deshabilitar ComboBox
+            this.comboCategorias.setEnabled(false);
+        }
         if (this.scrollProductos != null) {
             this.scrollProductos.setVisible(false);
         }

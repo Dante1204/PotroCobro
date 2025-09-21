@@ -37,12 +37,10 @@ public class AplicarDescuento implements Runnable {
     carrito.calcularTotal();
     double total = carrito.getTotal();
 
-    // CREAMOS COPIAS FINALES PARA USAR EN LA LAMBDA
     final double descuentoParaActualizar = descuento;
     final double totalParaActualizar = total;
 
     SwingUtilities.invokeLater(() -> {
-        // AHORA SÍ FUNCIONA: Usamos las copias finales
         vista.etiquetaDescuento.setText(String.format("$%.2f", descuentoParaActualizar));
         vista.etiquetaTotal.setText(String.format("$%.2f", totalParaActualizar));
     });

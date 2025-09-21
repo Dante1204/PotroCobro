@@ -11,8 +11,6 @@ import javax.swing.SwingUtilities;
 public class PotroCobro {
 
     public static void main(String[] args) {
-        // Es una buena práctica asegurar que la GUI se cree y se muestre
-        // en el Event Dispatch Thread (EDT) de Swing.
         
         ConexionDB.getInstance().inicializarBaseDeDatos();
         

@@ -147,11 +147,10 @@ public class ConexionDB {
         }
     }
 
-    // --- MÉTODOS PARA PRODUCTOS (ya lo tenías) ---
 
     public List<Producto> obtenerTodosLosProductos() {
         List<Producto> productos = new ArrayList<>();
-        String sql = "SELECT nombre, precio FROM productos";
+        String sql = "SELECT nombre, precio FROM productos ORDER BY nombre ASC";
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             
@@ -173,7 +172,6 @@ public class ConexionDB {
         // Leche
         productos.add(new Producto("Leche entera Lala 1L", 28.50));
         productos.add(new Producto("Leche entera Santa Clara 1L (6pzas)", 230.00));
-        // ... (Aquí iría la lista completa de todos tus productos del PDF) ...
         // Snacks
         productos.add(new Producto("Gansito Marinela 50g", 20.90));
         productos.add(new Producto("Pingüinos Marinela 80g", 27.90));

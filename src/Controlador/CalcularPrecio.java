@@ -28,7 +28,7 @@ public class CalcularPrecio implements Runnable {
     carrito.calcularSubtotal();
     double subtotal = carrito.getSubtotal();
     
-    final double subtotalParaActualizar = subtotal; // Copia final
+    final double subtotalParaActualizar = subtotal; 
     
     SwingUtilities.invokeLater(() -> {
         vista.etiquetaSubtotal.setText(String.format("$%.2f", subtotalParaActualizar));
