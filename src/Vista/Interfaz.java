@@ -1,16 +1,36 @@
 package Vista;
 
 import controlador.ControladorPrincipal;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import modelo.CarritoItem;
 import modelo.Producto;
 
 public class Interfaz extends JFrame {
     private JPanel panelProductos;
     private JScrollPane scrollProductos;
     public JLabel etiquetaSubtotal, etiquetaDescuento, etiquetaTotal;
-    public JTextArea areaCarrito;
+    private JPanel panelItemsCarrito;
     public JButton botonFinalizarCompra, botonLogin, botonLogout, botonAnadirProducto;
     public JComboBox<String> comboCategorias;
 
@@ -21,9 +41,9 @@ public class Interfaz extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(15, 15));
 
-        // --- Panel Superior (SOLO TÍTULO) ---
+        // --- Panel Superior (TÍTULO) ---
         JPanel panelSuperior = new JPanel(new BorderLayout());
-        panelSuperior.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 15)); // Ajuste de borde
+        panelSuperior.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 15));
         
         JLabel tituloLabel = new JLabel("PotroCobro Autoservicio");
         tituloLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
@@ -36,13 +56,11 @@ public class Interfaz extends JFrame {
         JPanel panelCentral = new JPanel(new BorderLayout(0, 10));
         panelCentral.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0));
 
-        // Panel de Filtros (Movido aquí)
         JPanel panelFiltros = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         panelFiltros.add(new JLabel("Categoría: "));
         comboCategorias = new JComboBox<>();
         panelFiltros.add(comboCategorias);
         
-        // Panel de Productos
         panelProductos = new JPanel();
         panelProductos.setLayout(new BoxLayout(panelProductos, BoxLayout.Y_AXIS));
         panelProductos.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -51,26 +69,21 @@ public class Interfaz extends JFrame {
         scrollProductos = new JScrollPane(panelProductos);
         scrollProductos.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220)));
 
-        // Añadir filtros y lista de productos al panel central
         panelCentral.add(panelFiltros, BorderLayout.NORTH);
         panelCentral.add(scrollProductos, BorderLayout.CENTER);
 
-        add(panelCentral, BorderLayout.CENTER);
-
-
         // --- Panel Derecho (Carrito y Acciones) ---
-        JPanel panelDerecho = new JPanel(new BorderLayout(10, 10));
-        panelDerecho.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 15));
+        JPanel panelDerecho = new JPanel(new BorderLayout());
+        panelDerecho.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 15));
         
-        // Panel del Carrito
         JPanel panelCarrito = new JPanel(new BorderLayout());
         panelCarrito.setBorder(BorderFactory.createTitledBorder("Mi Carrito"));
-        areaCarrito = new JTextArea(15, 35);
-        areaCarrito.setEditable(false);
-        areaCarrito.setFont(new Font("Consolas", Font.PLAIN, 14));
-        panelCarrito.add(new JScrollPane(areaCarrito));
         
-        // Panel de Resumen de Compra
+        panelItemsCarrito = new JPanel();
+        panelItemsCarrito.setLayout(new BoxLayout(panelItemsCarrito, BoxLayout.Y_AXIS));
+        JScrollPane scrollCarrito = new JScrollPane(panelItemsCarrito);
+        panelCarrito.add(scrollCarrito);
+        
         JPanel panelResumen = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         panelResumen.setBorder(BorderFactory.createTitledBorder("Resumen de Compra"));
@@ -85,17 +98,13 @@ public class Interfaz extends JFrame {
 
         gbc.insets = new Insets(8, 8, 8, 8);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-
         gbc.gridx = 0; gbc.gridy = 0; gbc.anchor = GridBagConstraints.EAST; panelResumen.add(new JLabel("Subtotal:"), gbc);
         gbc.gridx = 1; gbc.gridy = 0; gbc.anchor = GridBagConstraints.WEST; panelResumen.add(etiquetaSubtotal, gbc);
-
         gbc.gridx = 0; gbc.gridy = 1; gbc.anchor = GridBagConstraints.EAST; panelResumen.add(new JLabel("Descuento:"), gbc);
         gbc.gridx = 1; gbc.gridy = 1; gbc.anchor = GridBagConstraints.WEST; panelResumen.add(etiquetaDescuento, gbc);
-
         gbc.gridx = 0; gbc.gridy = 2; gbc.anchor = GridBagConstraints.EAST; panelResumen.add(new JLabel("Total:"), gbc);
         gbc.gridx = 1; gbc.gridy = 2; gbc.anchor = GridBagConstraints.WEST; panelResumen.add(etiquetaTotal, gbc);
 
-        // Panel de Botones
         JPanel panelBotones = new JPanel(new GridLayout(3, 1, 0, 10));
         panelBotones.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         
@@ -107,14 +116,23 @@ public class Interfaz extends JFrame {
         panelBotones.add(botonAnadirProducto);
         panelBotones.add(botonLogout);
 
-        // Ensamblaje del panel derecho
         JPanel panelAcciones = new JPanel(new BorderLayout());
         panelAcciones.add(panelResumen, BorderLayout.NORTH);
         panelAcciones.add(panelBotones, BorderLayout.SOUTH);
         
-        panelDerecho.add(panelCarrito, BorderLayout.CENTER);
-        panelDerecho.add(panelAcciones, BorderLayout.SOUTH);
-        add(panelDerecho, BorderLayout.EAST);
+        JSplitPane splitPaneVerticalDerecho = new JSplitPane(JSplitPane.VERTICAL_SPLIT, panelCarrito, panelAcciones);
+        splitPaneVerticalDerecho.setResizeWeight(0.6);
+        splitPaneVerticalDerecho.setBorder(null);
+
+        panelDerecho.add(splitPaneVerticalDerecho, BorderLayout.CENTER);
+
+        // --- CAMBIO PRINCIPAL: JSplitPane HORIZONTAL ---
+        // Este panel divide el espacio horizontalmente entre productos y carrito
+        JSplitPane splitPanePrincipal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelCentral, panelDerecho);
+        splitPanePrincipal.setResizeWeight(0.65); // 65% del espacio para la lista de productos
+        splitPanePrincipal.setBorder(null);
+        
+        add(splitPanePrincipal, BorderLayout.CENTER);
 
         // --- Panel Inferior (Login) ---
         JPanel panelLogin = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 10));
@@ -123,6 +141,21 @@ public class Interfaz extends JFrame {
         add(panelLogin, BorderLayout.SOUTH);
         
         deshabilitarTienda();
+    }
+    
+    public void actualizarVistaCarrito(List<CarritoItem> items, ControladorPrincipal controlador) {
+        panelItemsCarrito.removeAll();
+        if (items.isEmpty()) {
+            JLabel vacioLabel = new JLabel("El carrito está vacío.");
+            vacioLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
+            panelItemsCarrito.add(vacioLabel);
+        } else {
+            for (CarritoItem item : items) {
+                panelItemsCarrito.add(new CarritoItemPanel(item, controlador));
+            }
+        }
+        panelItemsCarrito.revalidate();
+        panelItemsCarrito.repaint();
     }
 
     public void cargarCategorias(List<String> categorias) {
@@ -143,7 +176,7 @@ public class Interfaz extends JFrame {
                 }
             });
             panelProductos.add(panelProducto);
-            panelProductos.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio entre productos
+            panelProductos.add(Box.createRigidArea(new Dimension(0, 5)));
         }
         panelProductos.revalidate();
         panelProductos.repaint();

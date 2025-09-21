@@ -1,27 +1,53 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package modelo;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CarritoCompras {
-    private final List<Producto> items = new ArrayList<>();
+    private final Map<String, CarritoItem> items = new LinkedHashMap<>();
     private double subtotal = 0.0;
     private double descuento = 0.0;
     private double total = 0.0;
 
-    // Sincronizado para que el Hilo 3 no interfiera con el Hilo 4
     public synchronized void agregarProducto(Producto producto) {
-        items.add(producto);
+        String nombreProducto = producto.getNombre();
+        CarritoItem itemExistente = items.get(nombreProducto);
+
+        if (itemExistente != null) {
+            itemExistente.incrementarCantidad();
+        } else {
+            items.put(nombreProducto, new CarritoItem(producto, 1));
+        }
         System.out.println(producto.getNombre() + " agregado al carrito.");
     }
+    
+    public synchronized void incrementarCantidad(String nombreProducto) {
+        CarritoItem item = items.get(nombreProducto);
+        if (item != null) {
+            item.incrementarCantidad();
+        }
+    }
 
-    // Sincronizado para cálculos seguros
+    public synchronized void decrementarCantidad(String nombreProducto) {
+        CarritoItem item = items.get(nombreProducto);
+        if (item != null) {
+            item.decrementarCantidad();
+            if (item.getCantidad() == 0) {
+                items.remove(nombreProducto);
+            }
+        }
+    }
+
+    public synchronized void eliminarProducto(String nombreProducto) {
+        items.remove(nombreProducto);
+    }
+
     public synchronized void calcularSubtotal() {
-        this.subtotal = items.stream().mapToDouble(Producto::getPrecio).sum();
+        this.subtotal = items.values().stream()
+                .mapToDouble(CarritoItem::getSubtotal)
+                .sum();
     }
 
     public synchronized void aplicarDescuento(double descuento) {
@@ -32,7 +58,6 @@ public class CarritoCompras {
         this.total = this.subtotal - this.descuento;
     }
     
-    // Getters sincronizados para una lectura segura del estado actual
     public synchronized double getSubtotal() {
         return subtotal;
     }
@@ -45,9 +70,8 @@ public class CarritoCompras {
         return total;
     }
 
-    public synchronized List<Producto> getItems() {
-        // Devolvemos una copia para que otros hilos no puedan modificar la lista original
-        return new ArrayList<>(items);
+    public synchronized List<CarritoItem> getItems() {
+        return new ArrayList<>(items.values());
     }
 
     public synchronized void vaciarCarrito() {

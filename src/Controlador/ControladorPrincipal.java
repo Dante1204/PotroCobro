@@ -7,6 +7,7 @@ import Vista.Interfaz;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import modelo.CarritoItem;
 
 public class ControladorPrincipal {
     private final CarritoCompras carrito;
@@ -73,7 +74,7 @@ public class ControladorPrincipal {
 
                 if (db.registrarProducto(nombre, precio, categoria)) {
                     JOptionPane.showMessageDialog(vista, "Producto añadido exitosamente.");
-                    filtrarProductosPorCategoria(); // Actualiza la lista de productos
+                    filtrarProductosPorCategoria();
                 } else {
                     JOptionPane.showMessageDialog(vista, "Error al añadir el producto.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -124,6 +125,8 @@ public class ControladorPrincipal {
         
         vista.revalidate();
         vista.repaint();
+        
+        actualizarVistaCarrito();
 
         iniciarHilosDeCompra();
         if (vista.botonFinalizarCompra.getActionListeners().length == 0) {
@@ -133,6 +136,21 @@ public class ControladorPrincipal {
 
     public void agregarProductoAlCarrito(Producto producto) {
         carrito.agregarProducto(producto);
+        actualizarVistaCarrito();
+    }
+    
+    public void incrementarCantidad(String nombreProducto) {
+        carrito.incrementarCantidad(nombreProducto);
+        actualizarVistaCarrito();
+    }
+    
+    public void decrementarCantidad(String nombreProducto) {
+        carrito.decrementarCantidad(nombreProducto);
+        actualizarVistaCarrito();
+    }
+    
+    public void eliminarDelCarrito(String nombreProducto) {
+        carrito.eliminarProducto(nombreProducto);
         actualizarVistaCarrito();
     }
 
@@ -159,9 +177,12 @@ public class ControladorPrincipal {
 
     private void gestionarFinalizacionCompra() {
         detenerHilosActivos();
-        Thread hiloFinalizar = new Thread(new GenerarTicket(carrito), "HILO_FINALIZAR_TICKET");
+        // Le pasamos el controlador (this) al hilo del ticket
+        Thread hiloFinalizar = new Thread(new GenerarTicket(carrito, this), "HILO_FINALIZAR_TICKET");
         hiloFinalizar.start();
-        reiniciarVistaParaNuevaCompra();
+        
+        // Ya no reiniciamos la vista aquí, el hilo del ticket lo hará
+        // reiniciarVistaParaNuevaCompra(); 
     }
 
     private void detenerHilosActivos() {
@@ -171,15 +192,13 @@ public class ControladorPrincipal {
     }
 
     private void actualizarVistaCarrito() {
-        StringBuilder textoCarrito = new StringBuilder();
-        for (Producto p : carrito.getItems()) {
-            textoCarrito.append(p.getNombre()).append("\n");
-        }
-        vista.areaCarrito.setText(textoCarrito.toString());
+        List<CarritoItem> items = carrito.getItems();
+        vista.actualizarVistaCarrito(items, this);
     }
     
-    private void reiniciarVistaParaNuevaCompra() {
-        vista.areaCarrito.setText("");
+    // El método ahora es público para ser llamado desde GenerarTicket
+    public void reiniciarVistaParaNuevaCompra() {
+        actualizarVistaCarrito();
         vista.etiquetaSubtotal.setText("$0.00");
         vista.etiquetaDescuento.setText("$0.00");
         vista.etiquetaTotal.setText("$0.00");
