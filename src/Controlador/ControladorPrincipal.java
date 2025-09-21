@@ -27,42 +27,60 @@ public class ControladorPrincipal {
 
     public void iniciar() {
         vista.deshabilitarTienda();
-        configurarEventosLogin();
+        configurarEventos();
         vista.setVisible(true);
     }
 
-    private void configurarEventosLogin() {
+    private void configurarEventos() {
         vista.botonLogin.addActionListener(e -> mostrarDialogoLogin());
         vista.botonLogout.addActionListener(e -> gestionarLogout());
         vista.botonAnadirProducto.addActionListener(e -> anadirProducto());
+        vista.comboCategorias.addActionListener(e -> filtrarProductosPorCategoria());
+    }
+    
+    private void filtrarProductosPorCategoria() {
+        String categoriaSeleccionada = (String) vista.comboCategorias.getSelectedItem();
+        if (categoriaSeleccionada == null) return;
+        
+        if (categoriaSeleccionada.equals("Todas")) {
+            this.catalogo = db.obtenerTodosLosProductos();
+        } else {
+            this.catalogo = db.obtenerProductosPorCategoria(categoriaSeleccionada);
+        }
+        vista.cargarProductos(catalogo, this);
     }
 
     private void anadirProducto() {
         JTextField nombreField = new JTextField(15);
         JTextField precioField = new JTextField(15);
-        JPanel panelAnadir = new JPanel(new GridLayout(2, 2, 5, 5));
+        JComboBox<String> categoriaCombo = new JComboBox<>(new String[]{"Lácteos", "Snacks", "Limpieza", "Bebidas", "General"});
+        
+        JPanel panelAnadir = new JPanel(new GridLayout(3, 2, 5, 5));
         panelAnadir.add(new JLabel("Nombre del Producto:"));
         panelAnadir.add(nombreField);
         panelAnadir.add(new JLabel("Precio del Producto:"));
         panelAnadir.add(precioField);
+        panelAnadir.add(new JLabel("Categoría:"));
+        panelAnadir.add(categoriaCombo);
 
         int result = JOptionPane.showConfirmDialog(vista, panelAnadir, "Añadir Nuevo Producto", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
             String nombre = nombreField.getText();
-            Double precio = Double.parseDouble(precioField.getText());
-            
-        if (db.registrarProducto(nombre, precio)) {
-        JOptionPane.showMessageDialog(vista, "Producto añadido exitosamente.");
-        
-        this.catalogo = db.obtenerTodosLosProductos();
-        vista.cargarProductos(catalogo, this);
+            String categoria = (String) categoriaCombo.getSelectedItem();
+            try {
+                double precio = Double.parseDouble(precioField.getText());
 
-    } else {
-        JOptionPane.showMessageDialog(vista, "Error al añadir el producto.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
+                if (db.registrarProducto(nombre, precio, categoria)) {
+                    JOptionPane.showMessageDialog(vista, "Producto añadido exitosamente.");
+                    filtrarProductosPorCategoria(); // Actualiza la lista de productos
+                } else {
+                    JOptionPane.showMessageDialog(vista, "Error al añadir el producto.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(vista, "El precio debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            }
         }
-        
     }
     
     private void mostrarDialogoLogin() {
@@ -97,23 +115,22 @@ public class ControladorPrincipal {
     }
 
     private void gestionarLoginExitoso() {
-    this.catalogo = db.obtenerTodosLosProductos();    
-    vista.cargarProductos(catalogo, this);
-    vista.habilitarTienda();
+        List<String> categorias = db.obtenerCategorias();
+        vista.cargarCategorias(categorias);
     
-    vista.revalidate();
-    vista.repaint();
+        this.catalogo = db.obtenerTodosLosProductos();    
+        vista.cargarProductos(catalogo, this);
+        vista.habilitarTienda();
+        
+        vista.revalidate();
+        vista.repaint();
 
-    iniciarHilosDeCompra();
-    if (vista.botonFinalizarCompra.getActionListeners().length == 0) {
-        vista.botonFinalizarCompra.addActionListener(ev -> gestionarFinalizacionCompra());
+        iniciarHilosDeCompra();
+        if (vista.botonFinalizarCompra.getActionListeners().length == 0) {
+            vista.botonFinalizarCompra.addActionListener(ev -> gestionarFinalizacionCompra());
+        }
     }
-}
 
-    /**
-     * Método público para que la Vista nos ordene agregar un producto al carrito.
-     * @param producto El producto en el que se hizo clic.
-     */
     public void agregarProductoAlCarrito(Producto producto) {
         carrito.agregarProducto(producto);
         actualizarVistaCarrito();

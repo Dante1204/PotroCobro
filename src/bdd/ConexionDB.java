@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConexionDB {
-    private static final String URL = "jdbc:sqlite:C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/tienda.db";
+    private static final String URL = "jdbc:sqlite:tienda.db"; // Ruta relativa
     private static ConexionDB instancia;
     private Connection connection;
 
@@ -30,20 +30,13 @@ public class ConexionDB {
         return connection;
     }
 
-    // --- EL MÉTODO QUE FALTABA ---
-    /**
-     * Revisa la base de datos. Si las tablas no existen, las crea.
-     * Si las tablas existen pero están vacías, inserta los datos iniciales.
-     */
     public void inicializarBaseDeDatos() {
-        // SQL para crear la tabla de usuarios
         String sqlUsuarios = "CREATE TABLE IF NOT EXISTS usuarios (\n"
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
                 + " nombre_usuario TEXT NOT NULL UNIQUE,\n"
                 + " contrasena TEXT NOT NULL\n"
                 + ");";
 
-        // SQL para crear la tabla de productos
         String sqlProductos = "CREATE TABLE IF NOT EXISTS productos (\n"
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
                 + " nombre TEXT NOT NULL,\n"
@@ -59,7 +52,6 @@ public class ConexionDB {
             return;
         }
 
-        // Verifica si la tabla de productos está vacía para insertar datos
         String sqlCheck = "SELECT COUNT(*) AS total FROM productos";
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sqlCheck)) {
@@ -76,9 +68,6 @@ public class ConexionDB {
         }
     }
 
-    /**
-     * Inserta la lista de productos iniciales en la base de datos.
-     */
     private void insertarDatosIniciales() {
         String sqlInsert = "INSERT INTO productos(nombre, precio, categoria) VALUES(?,?,?)";
         
@@ -97,8 +86,6 @@ public class ConexionDB {
             System.err.println("Error al insertar datos iniciales: " + e.getMessage());
         }
     }
-    
-    // --- MÉTODOS PARA USUARIOS (ya los tenías) ---
 
     public boolean validarUsuario(String usuario, String contrasena) {
         String sql = "SELECT * FROM usuarios WHERE nombre_usuario = ? AND contrasena = ?";
@@ -130,23 +117,19 @@ public class ConexionDB {
         }
     }
     
-    public boolean registrarProducto(String nombre, Double precio){
-        String sql = "INSERT INTO productos(nombre, precio) VALUES(?,?)";
+    public boolean registrarProducto(String nombre, double precio, String categoria){
+        String sql = "INSERT INTO productos(nombre, precio, categoria) VALUES(?,?,?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)){
             pstmt.setString(1, nombre);
             pstmt.setDouble(2, precio);
+            pstmt.setString(3, categoria);
             pstmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            if (e.getErrorCode() == 19) {
-                System.err.println("Error: El producto ya existe.");
-            } else {
-                System.err.println(e.getMessage());
-            }
+            System.err.println("Error al registrar producto: " + e.getMessage());
             return false;
         }
     }
-
 
     public List<Producto> obtenerTodosLosProductos() {
         List<Producto> productos = new ArrayList<>();
@@ -164,20 +147,46 @@ public class ConexionDB {
         }
         return productos;
     }
+    
+    public List<Producto> obtenerProductosPorCategoria(String categoria) {
+        List<Producto> productos = new ArrayList<>();
+        String sql = "SELECT nombre, precio FROM productos WHERE categoria = ? ORDER BY nombre ASC";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, categoria);
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                String nombre = rs.getString("nombre");
+                double precio = rs.getDouble("precio");
+                productos.add(new Producto(nombre, precio));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener productos por categoria: " + e.getMessage());
+        }
+        return productos;
+    }
 
-    // --- MÉTODOS PRIVADOS AUXILIARES ---
+    public List<String> obtenerCategorias() {
+        List<String> categorias = new ArrayList<>();
+        String sql = "SELECT DISTINCT categoria FROM productos WHERE categoria IS NOT NULL ORDER BY categoria";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                categorias.add(rs.getString("categoria"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al obtener categorias: " + e.getMessage());
+        }
+        return categorias;
+    }
 
     private List<Producto> obtenerListaDeProductosIniciales() {
         List<Producto> productos = new ArrayList<>();
-        // Leche
         productos.add(new Producto("Leche entera Lala 1L", 28.50));
         productos.add(new Producto("Leche entera Santa Clara 1L (6pzas)", 230.00));
-        // Snacks
         productos.add(new Producto("Gansito Marinela 50g", 20.90));
         productos.add(new Producto("Pingüinos Marinela 80g", 27.90));
-        // Limpieza
         productos.add(new Producto("Pinol El Original 5.1L", 179.00));
-        // Bebidas
         productos.add(new Producto("Coca-Cola 600ml", 18.00));
         return productos;
     }
