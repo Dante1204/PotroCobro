@@ -33,7 +33,10 @@ public class ControladorPrincipal {
     }
 
     private void configurarEventos() {
-        vista.botonLogin.addActionListener(e -> mostrarDialogoLogin());
+        vista.botonLogin.addActionListener(e -> {
+            Thread hiloLogin = new Thread(new Login(vista, db, this), "HILO_LOGIN");
+            hiloLogin.start();
+        });
         vista.botonLogout.addActionListener(e -> gestionarLogout());
         vista.botonAnadirProducto.addActionListener(e -> anadirProducto());
         vista.comboCategorias.addActionListener(e -> filtrarProductosPorCategoria());
@@ -84,38 +87,7 @@ public class ControladorPrincipal {
         }
     }
     
-    private void mostrarDialogoLogin() {
-        JTextField usuarioField = new JTextField(15);
-        JPasswordField contrasenaField = new JPasswordField(15);
-        JPanel panelLogin = new JPanel(new GridLayout(2, 2, 5, 5));
-        panelLogin.add(new JLabel("Usuario:"));
-        panelLogin.add(usuarioField);
-        panelLogin.add(new JLabel("Contraseña:"));
-        panelLogin.add(contrasenaField);
-        int result = JOptionPane.showConfirmDialog(vista, panelLogin, "Iniciar Sesión / Registrarse", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (result == JOptionPane.OK_OPTION) {
-            String usuario = usuarioField.getText();
-            String contrasena = new String(contrasenaField.getPassword());
-              if (usuario.isEmpty() || contrasena.isEmpty()) {
-                JOptionPane.showMessageDialog(vista, "El usuario y la contraseña no pueden estar vacíos.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (db.validarUsuario(usuario, contrasena)) {
-                gestionarLoginExitoso();
-            } else {
-                int registrar = JOptionPane.showConfirmDialog(vista, "Usuario no encontrado o contraseña incorrecta.\n¿Desea registrar este nuevo usuario?", "Registrar", JOptionPane.YES_NO_OPTION);
-                if (registrar == JOptionPane.YES_OPTION) {
-                    if (db.registrarUsuario(usuario, contrasena)) {
-                        JOptionPane.showMessageDialog(vista, "Usuario registrado exitosamente. Por favor, inicie sesión de nuevo.");
-                    } else {
-                        JOptionPane.showMessageDialog(vista, "No se pudo registrar (es posible que el nombre de usuario ya exista).", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            }
-        }
-    }
-
-    private void gestionarLoginExitoso() {
+    public void gestionarLoginExitoso() {
         List<String> categorias = db.obtenerCategorias();
         vista.cargarCategorias(categorias);
     
@@ -135,8 +107,8 @@ public class ControladorPrincipal {
     }
 
     public void agregarProductoAlCarrito(Producto producto) {
-        carrito.agregarProducto(producto);
-        actualizarVistaCarrito();
+        Thread hiloSeleccion = new Thread(new SeleccionProducto(carrito, producto, this), "HILO_SELECCION_PRODUCTO");
+        hiloSeleccion.start();
     }
     
     public void incrementarCantidad(String nombreProducto) {
@@ -177,12 +149,8 @@ public class ControladorPrincipal {
 
     private void gestionarFinalizacionCompra() {
         detenerHilosActivos();
-        // Le pasamos el controlador (this) al hilo del ticket
-        Thread hiloFinalizar = new Thread(new GenerarTicket(carrito, this), "HILO_FINALIZAR_TICKET");
+        Thread hiloFinalizar = new Thread(new FinalizarCompra(carrito, this), "HILO_FINALIZAR_COMPRA");
         hiloFinalizar.start();
-        
-        // Ya no reiniciamos la vista aquí, el hilo del ticket lo hará
-        // reiniciarVistaParaNuevaCompra(); 
     }
 
     private void detenerHilosActivos() {
@@ -191,16 +159,19 @@ public class ControladorPrincipal {
         if (sesionRunnable != null) sesionRunnable.detener();
     }
 
-    private void actualizarVistaCarrito() {
+    public void actualizarVistaCarrito() {
         List<CarritoItem> items = carrito.getItems();
         vista.actualizarVistaCarrito(items, this);
     }
     
-    // El método ahora es público para ser llamado desde GenerarTicket
     public void reiniciarVistaParaNuevaCompra() {
         actualizarVistaCarrito();
         vista.etiquetaSubtotal.setText("$0.00");
         vista.etiquetaDescuento.setText("$0.00");
         vista.etiquetaTotal.setText("$0.00");
+    }
+
+    public CarritoCompras getCarrito() {
+        return carrito;
     }
 }

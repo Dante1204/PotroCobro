@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="tienda.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="843"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="0" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="productos" custom_title="0" dock_id="1" table="4,9:mainproductos"/><dock_state state="000000ff00000000fd00000001000000020000024900000213fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000000002490000011e00ffffff000002490000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="productos" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort><column index="0" mode="0"/></sort><column_widths><column index="1" value="29"/><column index="2" value="300"/><column index="3" value="54"/><column index="4" value="70"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">-- LECHE
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche entera Lala-1L', 28.50, 'LECHE');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche entera Santa Clara - 1 L (6 piezas)', 230.00, 'LECHE');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche entera Alpura 1L (6 piezas)', 180.00, 'LECHE');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche entera Nutrileche 1L', 25.00, 'LECHE');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche deslactosada Lala 1 L (6 piezas)', 159.00, 'LECHE');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche deslactosada Alpura-1L', 30.00, 'LECHE');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche deslactosada Santa Clara - 1L', 40.00, 'LECHE');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche saborizada Lala Yomi vainilla 180 ml', 10.00, 'LECHE');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche saborizada Lala Yomi chocolate 180 ml', 10.00, 'LECHE');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche saborizada Lala Yomi fresa 180 ml', 10.00, 'LECHE');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche saborizada Alpura Vainilla 180 ml', 11.00, 'LECHE');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche saborizada Alpura Fresa 180 ml', 11.00, 'LECHE');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche saborizada Alpura Chocolate - 180 ml', 11.00, 'LECHE');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche saborizada Santa Clara Vainilla 180 ml', 13.00, 'LECHE');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche saborizada Santa Clara-Chocolate 180ml', 13.00, 'LECHE');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Leche saborizada Santa Clara Fresa 180 ml', 13.00, 'LECHE');
+
+-- YOGURT
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Yogurt bebible Lala Fresa - 220 g 8 piezas', 70.00, 'YOGURT');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Yogurt natural Alpura Natural - 1 kg', 42.00, 'YOGURT');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Yogurt griego Danone Griego-150 g', 18.00, 'YOGURT');
+
+-- MANTEQUILLAS
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Mantequilla Lala sin sal-90 g', 24.00, 'MANTEQUILLAS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Margarina Primavera-225 g', 18.00, 'MANTEQUILLAS');
+
+-- SNACKS
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Galletas Marinela Canelitas-300 g', 37.90, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Galletas Chokis-300 g', 107.00, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Galletas Sponch 700 g (4 paquetes)', 79.50, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Galletas Pasticetas - 400 g', 65.90, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Surtido de galletas Marinela - 450 g', 73.50, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Sabritas Flamin Hot', 20.00, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Sabritas Limón', 20.00, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Sabritas Adobadas', 20.00, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Doritos Rojos - 75 gr', 18.00, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Doritos Verdes - 35 gr', 18.00, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Cheetos Flamin Hot - 80 gr', 15.00, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Cheetos Poffs - 80 gr', 15.00, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Cheetos Torciditos - 80 gr', 15.00, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Cacahuates 70 gr', 20.00, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Gansito Marinela - 50 g', 20.90, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Pingüinos Marinela 80 g', 27.90, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Choco Roles Marinela - 122 g (2 piezas)', 27.90, 'SNACKS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Gansito Marinela 3 Piezas', 50.90, 'SNACKS');
+
+-- PRODUCTOS DE LIMPIEZA
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Pinol El Original-5.1 L', 179.00, 'PRODUCTOS DE LIMPIEZA');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Fabuloso-6 L', 199.00, 'PRODUCTOS DE LIMPIEZA');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Cloralex-1L', 68.00, 'PRODUCTOS DE LIMPIEZA');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Clorox-1L', 65.00, 'PRODUCTOS DE LIMPIEZA');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Vanish-1L', 90.00, 'PRODUCTOS DE LIMPIEZA');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Detergente Ariel Líquido Poder y Cuidado 8.5L', 374.25, 'PRODUCTOS DE LIMPIEZA');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Detergente Persil en Polvo para Ropa de Color - 9 kg', 439.00, 'PRODUCTOS DE LIMPIEZA');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Detergente Ariel Líquido Color-2.8 L (45 lavadas)', 149.00, 'PRODUCTOS DE LIMPIEZA');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Detergente Ariel en Polvo con Downy 750 g', 35.00, 'PRODUCTOS DE LIMPIEZA');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Detergente Ariel Expert Líquido 5 L (80 lavadas)', 194.90, 'PRODUCTOS DE LIMPIEZA');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Lavatrastes Salvo Limón Líquido - 1.4 L', 69.00, 'PRODUCTOS DE LIMPIEZA');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Lavatrastes Salvo polvo-1 Kg', 39.00, 'PRODUCTOS DE LIMPIEZA');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Lavatrastes Salvo Lavatrastes Limón 900 ml', 55.00, 'PRODUCTOS DE LIMPIEZA');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Lavatrastes Salvo Lavatrastes Limón 500ml', 32.90, 'PRODUCTOS DE LIMPIEZA');
+
+-- BEBIDAS
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Coca-Cola 600ml', 18.00, 'BEBIDAS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Agua Ciel 1L', 15.00, 'BEBIDAS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Pepsi 600ml', 17.00, 'BEBIDAS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Jumex de Mango 1L', 25.00, 'BEBIDAS');
+INSERT INTO productos (nombre, precio, categoria) VALUES ('Powerade Morado 500ml', 22.00, 'BEBIDAS');</sql><current_tab id="0"/></tab_sql></sqlb_project>

@@ -5,6 +5,13 @@
         <group>
             <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/bdd/ConexionDB.java</file>
             <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/potrocobro/PotroCobro.java</file>
+            <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Vista/Interfaz.java</file>
+            <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Controlador/ControladorPrincipal.java</file>
+            <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Vista/ProductoPanel.java</file>
+            <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Modelo/CarritoItem.java</file>
+            <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Vista/CarritoItemPanel.java</file>
+            <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Modelo/CarritoCompras.java</file>
+            <file>file:/C:/Users/dmgzd/OneDrive/Documentos/NetBeansProjects/PotroCobro/src/Controlador/GenerarTicket.java</file>
         </group>
     </open-files>
 </project-private>
